@@ -1,2 +1,5 @@
 README
 This file explains how pacnotify works…
+
+Depends on libnotify 0.7.5-1
+pacmans database must be updated by user/cronjob
