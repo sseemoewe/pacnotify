@@ -1,8 +1,8 @@
 README
 I. Description
-pacnotify is a little script to display notifications about updates.
-I try to follow KISS, so it really only notifies about available updates.
-The pacman database itself must be synced by another program.
+pacnotify is a little script to display notifications about updates. I 
+try to follow KISS, so it really only notifies about available 
+updates. The pacman database itself must be synced by another program.
 
 II. Dependencies
 Depends on libnotify 0.7.5-1
@@ -18,7 +18,6 @@ I recommend to create a cronjob in /etc/cron.hourly:
 /usr/bin/pacman -Syuw --noconfirm
 
 IV. Running
-just run pacnotify.sh after the sleeptime is elapsed pacnotify will call pacman -Qqu
-which just lists the new packages, one per line. this is then stored in /tmp/qqu
- for further processing.
-
+Just run pacnotify.sh after the sleeptime is elapsed pacnotify will 
+call pacman -Qqu which just lists the new packages, one per line. this 
+is then stored in /tmp/qqu for further processing.
