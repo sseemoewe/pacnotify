@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 #Setting standards
-sleeptime=1d
+sleeptime=1h
 expiretime=600000
 conffile1=/etc/pacnotify.conf
 conffile2=/home/$USER/.config/pacnotify.conf
@@ -25,5 +25,5 @@ if [ -f $conffile2 ];
 fi
 while [ true ]
  do
-  sleep $updateinterval && /usr/bin/pacman -Qqu > /tmp/qqu && notify-send "Updates" "<b>Anzahl: `grep -c [a-z] /tmp/qqu`</b>\n`cat -b /tmp/qqu` " -t $showinterval
+  sleep $sleeptime && /usr/bin/pacman -Qqu > /tmp/qqu && notify-send "Updates" "<b>Anzahl: `grep -c [a-z] /tmp/qqu`</b>\n`cat -b /tmp/qqu` " -t $expiretime
  done
