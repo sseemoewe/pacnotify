@@ -6,6 +6,8 @@ updates. The pacman database itself must be synced by another program.
 
 II. Dependencies
 Depends on libnotify 0.7.5-1
+Requieres bash 4.2.42(2) (Don't know if older versions work too, but 
+thats that one it works with)
 
 III. Installation
  a. config file
