@@ -15,7 +15,6 @@ if [ -r $conffile1 ];
 	else
 		notify-send Pacnotify "global conffile <b>not</b> found. \n<b>Sleep: </b>$sleeptime \n<b>Notify: </b>$expiretime ms" -t 600000
 fi
-j
 if [ -r $conffile2 ];
 	then
 		. $conffile2
