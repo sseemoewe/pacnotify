@@ -3,6 +3,7 @@
 #Setting standards
 sleeptime=1h
 expiretime=600000
+icon=$PWD/logo32.png
 conffile1=/etc/pacnotify.conf
 conffile2=/home/$USER/.config/pacnotify.conf
 #that was all about config
@@ -24,5 +25,5 @@ if [ -r $conffile2 ];
 fi
 while [ true ]
  do
-  sleep $sleeptime && /usr/bin/pacman -Qqu > /tmp/qqu && notify-send "Updates" "<b>Anzahl: `grep -c [a-z] /tmp/qqu`</b>\n`cat -b /tmp/qqu` " -t $expiretime
+  sleep $sleeptime && /usr/bin/pacman -Qqu > /tmp/qqu && notify-send "Updates" "<b>Anzahl: `grep -c [a-z] /tmp/qqu`</b>\n`cat -b /tmp/qqu` " -t $expiretime -i $icon
  done
