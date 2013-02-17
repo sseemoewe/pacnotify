@@ -6,6 +6,8 @@ updates. The pacman database itself must be synced by another program.
 
 II. Dependencies
 Depends on libnotify 0.7.5-1
+Requieres bash 4.2.42(2) (Don't know if older versions work too, but 
+thats that one it works with)
 
 III. Installation
  a. config file
@@ -21,3 +23,16 @@ IV. Running
 Just run pacnotify.sh after the sleeptime is elapsed pacnotify will 
 call pacman -Qqu which just lists the new packages, one per line. this 
 is then stored in /tmp/qqu for further processing.
+
+V. License
+This program is given to you as is. If you run it and it eats your 
+carpet, shits on your parents, or bites your data, I am not the one to 
+blame.
+You have 
+the freedom to use the software for any purpose,
+the freedom to change the software to suit your needs,
+the freedom to share the software with your friends and neighbors, and
+the freedom to share the changes you make.
+
+VI. Thanx
+minikampfzwerg

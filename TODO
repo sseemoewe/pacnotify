@@ -1,0 +1,11 @@
+#Future plans, known issues
+
+= Future Plans =
+make an AUR PKGBUILD
+
+= Issues =
+Maybe an issue: If there is an instance of pacman already running *and* 
+the sleep time ends, the following _pacman -Qqu_ might just exit. Thats 
+no big problem but there will be no notification and we will have to 
+wait for sleeptimer again. Didn't see this but it might happen. Will 
+test this soon.
