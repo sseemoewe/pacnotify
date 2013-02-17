@@ -4,7 +4,7 @@
 sleeptime=1h
 expiretime=600000
 globalconf=/etc/pacnotify.conf
-userconf=/home/$USER/.config/pacnotify.conf_
+userconf=/home/$USER/.config/pacnotify.conf
 icon=$PWD/logo32.png
 #that was all about config
 #lets start
