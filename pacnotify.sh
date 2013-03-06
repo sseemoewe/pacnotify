@@ -8,7 +8,7 @@
 #last the values set here.
 sleeptime=1h	# time to wait between notifications
 expires=120		# seconds to display the notification
-backoff=5		# wait x if pacman is running (in minutes) , start with a small number!
+backoff=1		# wait x if pacman is running (in minutes) , start with a small number!
 backoff_limit=30 # limit minutes to wait (per try)
 delay=5			# add x minutes delay to backoff per try
 maxtries=10		# max tries until notification is send anyway, set to 0 to turn waiting off.
@@ -43,9 +43,9 @@ fi
 
 time=$(($expires * 1000))
 case $initmsg in
-	1) notify-send Pacnotify "Starting up and setting defaults from userconf.\n<b>Sleep: </b>$sleeptime \n<b>Show: </b>$expires s" -t $time -i $icon ;;
-	2) notify-send Pacnotify "Starting up and setting defaults from globalconf.\n<b>Sleep: </b>$sleeptime \n<b>Show: </b>$expires s" -t $time -i $icon ;;
-	3) notify-send Pacnotify "Starting up and setting defaults.\n<b>Sleep: </b>$sleeptime \n<b>Show: </b>$expires s" -t $time -i $icon ;;
+	1) notify-send Pacnotify "Starting up and setting defaults from userconf.\n<b>Sleep: </b>$sleeptime min \n<b>Show: </b>$expires sec" -t $time -i $icon ;;
+	2) notify-send Pacnotify "Starting up and setting defaults from globalconf.\n<b>Sleep: </b>$sleeptime min \n<b>Show: </b>$expires sec" -t $time -i $icon ;;
+	3) notify-send Pacnotify "Starting up and setting defaults.\n</b>$sleeptime min \n<b>Show: </b>$expires sec" -t $time -i $icon ;;
 	4) notify-send Pacnotify "Seems that pacnotify is already running. With PID: <b>`cat $lockfile`</b>. If not delete <b>$lockfile</b>.\n" -t $time -i $icon 
 	exit;;
 esac
@@ -79,9 +79,9 @@ while [ true ]
 				else
 					maxtries=-1
 			fi
-			if [ $waited -gt 0 ]
+			if [ $counts == $maxtries ]
 				then
-					p_runs_skip='<b>pacman was running </b>\nnumber of updates may be incorrect.\nWaited '$waited'm for pacman to exit. Gave up…\n'
+					p_runs_skip='<b>pacman was running</b> while checking for updates.\nNumber of updates may be incorrect.\nWaited '$waited'min for pacman to exit. Gave up…\n'
 				else
 					p_runs_skip=
 			fi
