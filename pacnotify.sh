@@ -42,19 +42,28 @@ case $initmsg in
 	4) notify-send Pacnotify "Seems that pacnotify is already running. With PID: <b>`cat $lockfile`</b>. If not delete <b>$lockfile</b>.\n" && exit;;
 esac
 while [ true ]
- do
-  /usr/bin/pacman -Qqu > $tmpfile
-  x_updates=`grep -c [a-z] $tmpfile`
-  x_diff=$(($x_updates - $lines))
-  if [ $x_diff -lt 0 ];
-	then
-		x_diff=0
-		more=
-	else
-		more='\n<b>and '$x_diff' more</b>'
-  fi
-  pakete=`head -n $lines $tmpfile|cat -b`
-  notify-send Pacnotify "<b>$x_updates Updates</b>\n$pakete $more" -t $(($expires * 1000)) -i $icon
-  rm $tmpfile
-  sleep $sleeptime
- done
+	do
+		pacman_pid=`pgrep -f "/usr/bin/pacman -S"`
+		if [ $pacman_pid != 0 ]
+			then
+				echo $pacman_pid
+				pruns='\n<b>pacman is running (PID: '$pacman_pid')</b>\nnumber of updates maybe incorrect.'
+		fi
+	/usr/bin/pacman -Qqu > $tmpfile
+	x_updates=`grep -c [a-z] $tmpfile`
+	x_diff=$(($x_updates - $lines))
+	if [ $x_diff -lt 0 ];
+		then
+			x_diff=0
+			more=$pruns
+		else
+			more='\n<b>and '$x_diff' more</b>'$pruns
+	fi
+	pakete=`head -n $lines $tmpfile|cat -b`
+	notify-send Pacnotify "<b>$x_updates Updates</b>\n$pakete $more" -t $(($expires * 1000)) -i $icon
+	rm $tmpfile
+	pacman_pid=
+	pruns=
+	more=
+	sleep $sleeptime
+done
