@@ -1,15 +1,21 @@
 #!/bin/bash
 #
 #Setting standards
+#Don't change the values here. Create a file in either your global 
+#config path, or in /home/YourName/.config/. name it pacnotify.conf 
+#and fill in the values you want to override. Notice that Users 
+#jconfiguration files always have precedence, then the global one and at 
+#last the values set here.
 sleeptime=1h
-expiretime=600000
+expires=120
 globalconf=/etc/pacnotify.conf
 userconf=/home/$USER/.config/pacnotify.conf
-icon=$PWD/logo32.png
+icon=/usr/share/icons/pacnotify32.png
 tmpfile=/tmp/pacnotify.qqu
-#that was all about config
-#lets start by getting the .conf
-#case [ -z $1 ]
+lines=9
+pid=$$
+lockfile=/tmp/pacnotify.lock
+
 if [ -f $userconf ];
 	then
 		. $userconf
@@ -22,19 +28,33 @@ if [ -f $userconf ];
 			initmsg=3
 fi
 
-# see if its already running
-if [ -f $tmpfile ];
-	then
-		initmsg=4
+if [ -f $lockfile ];
+				then
+					initmsg=4
+				else
+					echo $pid > $lockfile
 fi
 
 case $initmsg in
-	1) notify-send Pacnotify "Starting up and setting defaults from userconf.\n<b>Sleep: </b>$sleeptime \n<b>Show: </b>$expiretime ms" -t 60000 -i $icon ;;
-	2) notify-send Pacnotify "Starting up and setting defaults from globalconf.\n<b>Sleep: </b>$sleeptime \n<b>Show: </b>$expiretime ms" -t 60000 -i $icon ;;
-	3) notify-send Pacnotify "Starting up and setting defaults.\n<b>Sleep: </b>$sleeptime \n<b>Show: </b>$expiretime ms" -t 60000 -i $icon ;;
-	4) notify-send Pacnotify "Seems that pacnotify is already running. If not delete $tmpfile." && exit;;
+	1) notify-send Pacnotify "Starting up and setting defaults from userconf.\n<b>Sleep: </b>$sleeptime \n<b>Show: </b>$expires s" -t $(($expires * 1000)) -i $icon ;;
+	2) notify-send Pacnotify "Starting up and setting defaults from globalconf.\n<b>Sleep: </b>$sleeptime \n<b>Show: </b>$expires s" -t $(($expires * 1000)) -i $icon ;;
+	3) notify-send Pacnotify "Starting up and setting defaults.\n<b>Sleep: </b>$sleeptime \n<b>Show: </b>$expires s" -t $(($expires * 1000)) -i $icon ;;
+	4) notify-send Pacnotify "Seems that pacnotify is already running. With PID: <b>`cat $lockfile`</b>. If not delete <b>$lockfile</b>.\n" && exit;;
 esac
 while [ true ]
  do
-  sleep $sleeptime && /usr/bin/pacman -Qqu > $tmpfile && notify-send "Updates" "<b>Anzahl: `grep -c [a-z] $tmpfile`</b>\n`cat -b $tmpfile` " -t $expiretime
+  /usr/bin/pacman -Qqu > $tmpfile
+  x_updates=`grep -c [a-z] $tmpfile`
+  x_diff=$(($x_updates - $lines))
+  if [ $x_diff -lt 0 ];
+	then
+		x_diff=0
+		more=
+	else
+		more='\n<b>and '$x_diff' more</b>'
+  fi
+  pakete=`head -n $lines $tmpfile|cat -b`
+  notify-send Pacnotify "<b>$x_updates Updates</b>\n$pakete $more" -t $(($expires * 1000)) -i $icon
+  rm $tmpfile
+  sleep $sleeptime
  done
