@@ -96,7 +96,10 @@ while [ true ]
 			more='\n<b>and '$x_diff' more</b>'
 	fi
 	pakete=`head -n $lines $tmpfile|cat -b`
-	notify-send Pacnotify "$p_runs_skip<b>$x_updates Updates</b>\n$pakete $more" -t $time -i $icon
+	if [ $x_updates != 0 ];
+		then
+			notify-send Pacnotify "$p_runs_skip<b>$x_updates Updates</b>\n$pakete $more" -t $time -i $icon
+	fi
 	rm $tmpfile
 	pacman_pid=
 	pruns=
