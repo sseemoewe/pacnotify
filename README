@@ -1,36 +1,71 @@
-README
-I. Description
-pacnotify is a little script to display notifications about updates. I
-try to follow KISS, so it really only notifies about available
-updates. The pacman database itself must be synced by another program.
+Description
+pacnotify is a little script to display notifications about updates. I try to follow KISS, so it really only notifies about available updates. The pacman database itself must be synced by another program.
 
-II. Dependencies
-Depends on libnotify
+License
+Licensed under GNU GPLv3
 
-III. Installation
- a. config file
-Create file in ~/.config/pacnotify.conf:
-sleeptime=  #The time in seconds for pacnotify to sleep (man (1) sleep)
-expiretime= #the time in millisecs until the message goes away 0=never
- b. cronjob
-I recommend to create a cronjob in /etc/cron.hourly:
+Dependencies
+libnotify
+
+Download
+pacnotify can be downloaded from Downloads. I recommand the testing version because it got most options, while master is less developed but with maybe less bugs ;). Those are archives, so untar them and then follow the steps in Installation. You can also browse the Source. And easy clone it locally
+
+git clone https://code.google.com/p/pacnotify/
+Installation
+pacnotify
+Copy the script to where you like. To make it accessible for all users:
+
+cp pacnotify /usr/bin/pacnotify
+chown root:root /usr/bin/pacnotify
+chmod ugo+x /usr/bin/pacnotify # or chmod 744 /usr/bin/pacnotify
+config file
+Create file in either /etc or ~/.config. name it pacnotify.conf and fill in the values you would like to overwrite.
+
+# time to wait between notifications
+sleeptime=1h
+# seconds to display the notification
+expires=120
+# wait x if pacman is running (in minutes) , start with a small number!
+backoff=1
+# limit minutes to wait (per try)
+backoff_limit=30
+# add x minutes delay to backoff per try
+delay=5
+# max tries until notification is send anyway, set to 0 to turn off waiting.
+maxtries=10
+# lines of packages to display (more than 9 lines may cause formatting errors)
+lines=9
+# icon to use for notification
+icon=/usr/share/icons/pacnotify32.png # which icon to use
+Important: I changed the variable expiretime to expires, so if you have a old version of the configuration file the old variable will be ignored. Set the permissions to 744
+
+Important: If you create those files don't leave variables empty. You may omit variables that you dont want to change.
+
+Because the values are read in this order
+
+from script
+from /etc/pacnotify.conf
+from ~/.config/pacnotify.conf
+the next one always overrides the previous one. making it possible for a user to have individual values.
+cronjob
+Note: pacnotify does not sync your pacman database. It's crucial to get your databases updated somehow, otherwise it makes no sense to run pacnotify. I recommend to create a cronjob in /etc/cron.hourly name it (e.g. pacman_sync):
+
 #!/bin/bash
 /usr/bin/pacman -Syuw --noconfirm
+make it executable:
 
-IV. Running
-Just run pacnotify.sh after the sleeptime is elapsed pacnotify will
-call pacman -Qqu which just lists the new packages, one per line. this
-is then stored in /tmp/qqu for further processing.
+chmod ug+x /etc/cron.hourly/pacman_sync
+Have a cron-like daemon/service running :P
 
-V. License
-This program is given to you as is. If you run it and it eats your
-carpet, shits on your parents, or bites your data, I am not the one to
-blame.
-You have
-the freedom to use the software for any purpose,
-the freedom to change the software to suit your needs,
-the freedom to share the software with your friends and neighbors, and
-the freedom to share the changes you make.
+Running
+If you copied pacnotify the way described above, it is in your path. So its enough to call pacnotify. Otherwise you'll have to do something like:
 
-VI. Thanx
-minikampfzwerg
+./pacnotify
+#or
+sh pacnotify
+# see man (1) sh
+Note: You must either give the full path to the script, or be in the directory where the scipt is.
+
+Thanks
+
+Thanks to all the people that gave me hints to improve, and to everyone who tested pacnotify so far. If you did give some hints and want to be credited by name here, tell me :
