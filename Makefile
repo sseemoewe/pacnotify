@@ -11,6 +11,7 @@ all:
 install: all
 	$(INSTALL) -d $(DESTDIR)$(config)
 	$(INSTALL) -d $(DESTDIR)$(icons)
+	$(INSTALL) -d $(DESTDIR)$(confdir)
 	$(INSTALL) -m755 pacnotify.conf $(DESTDIR)$(confdir)
 	$(INSTALL) -m644 LICENSE $(DESTDIR)$(config)
 	$(INSTALL) -m644 README $(DESTDIR)$(config)
