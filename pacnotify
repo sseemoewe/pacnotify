@@ -13,14 +13,15 @@ backoff_limit=30 # limit minutes to wait (per try)
 delay=5			# add x minutes delay to backoff per try
 maxtries=10		# max tries until notification is send anyway, set to 0 to turn waiting off.
 lines=9			# lines of packages to display
-icon=/usr/share/icons/pacnotify32.png # which icon to use
+icon=/usr/share/pixmaps/pacnotify32.png # which icon to use
 
 #next few vars should not be touched
-globalconf=/etc/pacnotify.conf
+globalconf=/usr/share/pacnotify/pacnotify.conf
 userconf=/home/$USER/.config/pacnotify.conf
 tmpfile=/tmp/pacnotify.qqu
 pid=$$
 lockfile=/tmp/pacnotify.lock
+#let's start checking for config
 
 if [ -f $userconf ];
 	then

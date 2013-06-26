@@ -36,7 +36,7 @@ maxtries=10
 # lines of packages to display (more than 9 lines may cause formatting errors)
 lines=9
 # icon to use for notification
-icon=/usr/share/icons/pacnotify32.png # which icon to use
+icon=/usr/share/pixmaps/pacnotify32.png # which icon to use
 Important: I changed the variable expiretime to expires, so if you have a old version of the configuration file the old variable will be ignored. Set the permissions to 744
 
 Important: If you create those files don't leave variables empty. You may omit variables that you dont want to change.
@@ -44,7 +44,7 @@ Important: If you create those files don't leave variables empty. You may omit v
 Because the values are read in this order
 
 from script
-from /etc/pacnotify.conf
+from /usr/share/pacnotify/pacnotify.conf
 from ~/.config/pacnotify.conf
 the next one always overrides the previous one. making it possible for a user to have individual values.
 cronjob
