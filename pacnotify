@@ -10,7 +10,7 @@ sleeptime=1h	# time to wait between notifications
 expires=120		# seconds to display the notification
 lines=9			# lines of packages to display
 icon=/usr/share/pixmaps/pacnotify32.png # which icon to use
-backend=yaourt		# which backend to use one of: default pacman yaourt
+backend=default  	# which backend to use one of: default pacman yaourt
 
 #next few vars should not be touched
 globalconf=/usr/share/pacnotify/pacnotify.conf
