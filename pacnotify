@@ -8,12 +8,9 @@
 #last the values set here.
 sleeptime=1h	# time to wait between notifications
 expires=120		# seconds to display the notification
-backoff=1		# wait x if pacman is running (in minutes) , start with a small number!
-backoff_limit=30 # limit minutes to wait (per try)
-delay=5			# add x minutes delay to backoff per try
-maxtries=10		# max tries until notification is send anyway, set to 0 to turn waiting off.
 lines=9			# lines of packages to display
 icon=/usr/share/pixmaps/pacnotify32.png # which icon to use
+backend=yaourt		# which backend to use one of: default pacman yaourt
 
 #next few vars should not be touched
 globalconf=/usr/share/pacnotify/pacnotify.conf
@@ -44,15 +41,28 @@ fi
 
 time=$(($expires * 1000))
 case $initmsg in
-	1) notify-send Pacnotify "Starting up and setting defaults from userconf.\n<b>Sleep: </b>$sleeptime min \n<b>Show: </b>$expires sec" -t $time -i $icon ;;
-	2) notify-send Pacnotify "Starting up and setting defaults from globalconf.\n<b>Sleep: </b>$sleeptime min \n<b>Show: </b>$expires sec" -t $time -i $icon ;;
-	3) notify-send Pacnotify "Starting up and setting defaults.\n</b>$sleeptime min \n<b>Show: </b>$expires sec" -t $time -i $icon ;;
+	1) notify-send Pacnotify "Starting up and setting defaults from userconf.\n<b>Backend: </b>$backend\n<b>Sleep: </b>$sleeptime min \n<b>Show: </b>$expires sec" -t $time -i $icon ;;
+	2) notify-send Pacnotify "Starting up and setting defaults from globalconf.\n<b>Backend: </b>$backend\n<b>Sleep: </b>$sleeptime min \n<b>Show: </b>$expires sec" -t $time -i $icon ;;
+	3) notify-send Pacnotify "Starting up and setting defaults.\n<b>Backend: </b>$backend\n</b>$sleeptime min \n<b>Show: </b>$expires sec" -t $time -i $icon ;;
 	4) notify-send Pacnotify "Seems that pacnotify is already running. With PID: <b>`cat $lockfile`</b>. If not delete <b>$lockfile</b>.\n" -t $time -i $icon
 	exit;;
 esac
 while [ true ]
+
 	do
+	case $backend in
+	pacman)
+		notify-send Pacnotify "pacman"
+		/usr/bin/pacman -Qqu > $tmpfile
+	;;
+	yaourt)
+		notify-send Pacnotify "yaourt"
+		/usr/bin/yaourt -Qqau > $tmpfile
+		;;
+	*|default|checkupdates)	notify-send Pacnotify "checkupdates"
 		/usr/bin/checkupdates > $tmpfile
+ ;;
+	esac
 		x_updates=`grep -c [a-z] $tmpfile`
 		x_diff=$(($x_updates - $lines))
 	if [ $x_diff -lt 1 ];
@@ -67,9 +77,6 @@ while [ true ]
 			notify-send Pacnotify "$p_runs_skip<b>$x_updates Updates</b>\n$pakete $more" -t $time -i $icon
 	fi
 	rm $tmpfile
-	pacman_pid=
-	pruns=
 	more=
-	backoff=$oldbackoff
 	sleep $sleeptime
 done
