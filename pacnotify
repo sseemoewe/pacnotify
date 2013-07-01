@@ -52,14 +52,12 @@ while [ true ]
 	do
 	case $backend in
 	pacman)
-		notify-send Pacnotify "pacman"
 		/usr/bin/pacman -Qqu > $tmpfile
 	;;
 	yaourt)
-		notify-send Pacnotify "yaourt"
 		/usr/bin/yaourt -Qqau > $tmpfile
 		;;
-	*|default|checkupdates)	notify-send Pacnotify "checkupdates"
+	*|default|checkupdates)
 		/usr/bin/checkupdates > $tmpfile
  ;;
 	esac
